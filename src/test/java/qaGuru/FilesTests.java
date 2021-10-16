@@ -54,7 +54,7 @@ public class FilesTests {
 
     @Test
     void parseZipTest() throws Exception {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("Test.zip"){
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("Test.zip")) {
             ZipInputStream zis = new ZipInputStream(is);
             ZipEntry entry;
 
