@@ -3,11 +3,15 @@ package qaGuru;
 import com.codeborne.pdftest.PDF;
 import com.codeborne.selenide.Condition;
 import com.codeborne.xlstest.XLS;
+import org.apache.poi.ss.formula.ptg.ScalarConstantPtg;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
@@ -48,10 +52,26 @@ public class FilesTests {
                 .getStringCellValue()).isEqualTo("ФГБУ «Главрыбвод»");
     }
 
+    @Test
+    void parseZipTest() throws Exception {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("Test.zip"){
+            ZipInputStream zis = new ZipInputStream(is);
+            ZipEntry entry;
 
+            while ((entry = zis.getNextEntry()) != null) {
+                System.out.println(entry.getName());
+            }
+            /* for text files
+            Scanner sc = new Scanner(zis);
+            while (sc.hasNext()) {
+                sc.nextLine();
+            }
+            */
+        }
+    }
 
     @Test
-    void UploadTxtTest() {
+    void uploadTxtTest() {
         open("https://the-internet.herokuapp.com/upload");
         $("input[type='file']").uploadFromClasspath("example.txt");
         $("input[value = 'Upload'").click();
